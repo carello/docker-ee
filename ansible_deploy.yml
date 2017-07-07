@@ -1,0 +1,63 @@
+---
+- hosts: Docker
+  vars_prompt:
+  - name: "Centos_Version"
+    prompt: "CentOS Release Version"
+    default: "7.3"
+    private: no
+  - name: "Docker_EE_URL"
+    prompt: "Enter your Docker EE Docker"
+    private: no
+
+  tasks:
+    - name: install the 'Development tools' package group
+      yum: name="@Development tools" state=present
+
+    - name: install the 'Compatibility Libraries' package group
+      yum: name="@Compatibility Libraries" state=present
+
+    - name: Install Java JDK 1.8 
+      yum: name=java-1.8.0-openjdk-headless-debug.x86_64 state=present
+
+    - name: Copy Hosts File
+      copy: src="/etc/hosts" dest="/etc/hosts"
+    
+    - name: be sure ntp is installed
+      yum: name=ntp state=installed
+
+    - name: be sure ntp is configured
+      template: src=/etc/ntp.conf dest=/etc/ntp.conf
+      notify:
+        - restart ntpd
+
+    - name: be sure ntpd is running and enabled
+      service: name=ntpd state=started enabled=yes
+    - name: Open Firewall Ports
+      command: firewall-cmd --permanent --zone=public --add-port=443/tcp
+      command: firewall-cmd --permanent --zone=public --add-port=2375-2376/tcp
+      command: firewall-cmd --permanent --zone=public --add-port=4789/tcp
+      command: firewall-cmd --permanent --zone=public --add-port=4789/udp
+      command: firewall-cmd --permanent --zone=public --add-port=12379-12385/tcp
+      command: firewall-cmd --permanent --zone=public --add-port=2377/tcp
+      command: firewall-cmd --permanent --zone=public --add-port=7946/tcp
+      command: firewall-cmd --permanent --zone=public --add-port=7946/udp
+      command: firewall-cmd --permanent --zone=public --add-port=12386/tcp
+      command: firewall-cmd --permanent --zone=public --add-port=12376/tcp
+
+    - name: Restart Firewall Services
+      service: name=firewalld state=restarted
+    - name: Create variable files
+      shell: sh -c 'echo "{{Docker_EE_URL}}" > /etc/yum/vars/dockerurl'
+      shell: sh -c 'echo "{{Centos_Version}}" > /etc/yum/vars/dockerosversion'
+    - name: Install Yum Utils
+      yum: name=yum-utils state=present
+    - name: Configure Docker EE Repo
+      shell: "yum-config-manager --add-repo {{Docker_EE_URL}}/docker-ee.repo"
+      shell: "yum makecache fast"
+    - name: Install Docker EE  
+      shell: "yum install docker-ee"
+    - name: Enable Docker Services
+      shell: "/usr/bin/systemctl enable docker.service"
+      shell: "/usr/bin/systemctl start docker.service"
+      shell: "/usr/bin/systemctl status docker.service"
+      shell: "/usr/bin/docker info"
