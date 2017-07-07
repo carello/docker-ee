@@ -23,41 +23,53 @@
       copy: src="/etc/hosts" dest="/etc/hosts"
     
     - name: be sure ntp is installed
-      yum: name=ntp state=installed
+      yum: name=ntp state=present
 
     - name: be sure ntp is configured
-      template: src=/etc/ntp.conf dest=/etc/ntp.conf
-      notify:
-        - restart ntpd
+      copy: src=/etc/ntp.conf dest=/etc/ntp.conf
 
     - name: be sure ntpd is running and enabled
       service: name=ntpd state=started enabled=yes
-    - name: Open Firewall Ports
+
+    - name: Open ort 443
       command: firewall-cmd --permanent --zone=public --add-port=443/tcp
+    - name: Open ports 2375-2376
       command: firewall-cmd --permanent --zone=public --add-port=2375-2376/tcp
+    - name: Open port 4789/tcp
       command: firewall-cmd --permanent --zone=public --add-port=4789/tcp
+    - name: Open port 4789/udp
       command: firewall-cmd --permanent --zone=public --add-port=4789/udp
+    - name: Open ports 12379-12385/tcp
       command: firewall-cmd --permanent --zone=public --add-port=12379-12385/tcp
+    - name: Open ports 2377/tcp
       command: firewall-cmd --permanent --zone=public --add-port=2377/tcp
+    - name: Open ports 7946/tcp
       command: firewall-cmd --permanent --zone=public --add-port=7946/tcp
+    - name: Open ports 7946/udp
       command: firewall-cmd --permanent --zone=public --add-port=7946/udp
+    - name: Open ports 12386/tcp
       command: firewall-cmd --permanent --zone=public --add-port=12386/tcp
+    - name: Open ports 12376/tcp
       command: firewall-cmd --permanent --zone=public --add-port=12376/tcp
 
     - name: Restart Firewall Services
       service: name=firewalld state=restarted
-    - name: Create variable files
+
+    - name: Create Docker URL File
       shell: sh -c 'echo "{{Docker_EE_URL}}" > /etc/yum/vars/dockerurl'
+    - name: Create Docker Version File
       shell: sh -c 'echo "{{Centos_Version}}" > /etc/yum/vars/dockerosversion'
+
     - name: Install Yum Utils
       yum: name=yum-utils state=present
+
     - name: Configure Docker EE Repo
-      shell: "yum-config-manager --add-repo {{Docker_EE_URL}}/docker-ee.repo"
+      shell: "yum-config-manager --add-repo '{{Docker_EE_URL}}/docker-ee.repo'"
+    - name: Yum Makecache Fast
       shell: "yum makecache fast"
     - name: Install Docker EE  
-      shell: "yum install docker-ee"
+      yum: name=docker-ee state=present
     - name: Enable Docker Services
       shell: "/usr/bin/systemctl enable docker.service"
+    - name: Start Docker Services
       shell: "/usr/bin/systemctl start docker.service"
-      shell: "/usr/bin/systemctl status docker.service"
-      shell: "/usr/bin/docker info"
