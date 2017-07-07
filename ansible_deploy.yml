@@ -31,7 +31,7 @@
     - name: be sure ntpd is running and enabled
       service: name=ntpd state=started enabled=yes
 
-    - name: Open ort 443
+    - name: Open port 443
       command: firewall-cmd --permanent --zone=public --add-port=443/tcp
     - name: Open ports 2375-2376
       command: firewall-cmd --permanent --zone=public --add-port=2375-2376/tcp
@@ -64,12 +64,13 @@
       yum: name=yum-utils state=present
 
     - name: Configure Docker EE Repo
-      shell: "yum-config-manager --add-repo '{{Docker_EE_URL}}/docker-ee.repo'"
-    - name: Yum Makecache Fast
-      shell: "yum makecache fast"
+      shell: "yum-config-manager --add-repo '{{Docker_EE_URL}}/docker-ee.repo' update_cache=yes"
+
     - name: Install Docker EE  
       yum: name=docker-ee state=present
+
     - name: Enable Docker Services
       shell: "/usr/bin/systemctl enable docker.service"
+
     - name: Start Docker Services
       shell: "/usr/bin/systemctl start docker.service"
