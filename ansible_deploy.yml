@@ -13,6 +13,12 @@
     - name: install the 'Development tools' package group
       yum: name="@Development tools" state=present
 
+    - name: Install iSCSI Initiator tools
+      yum: name=iscsi-initiator-utils state=present
+
+    - name: Install DM Multipath
+      yum: name=device-mapper-multipath state=present
+
     - name: install the 'Compatibility Libraries' package group
       yum: name="@Compatibility Libraries" state=present
 
@@ -49,6 +55,8 @@
       command: firewall-cmd --permanent --zone=public --add-port=7946/udp
     - name: Open ports 12386/tcp
       command: firewall-cmd --permanent --zone=public --add-port=12386/tcp
+    - name: Open ports 12387/tcp
+      command: firewall-cmd --permanent --zone=public --add-port=12387/tcp
     - name: Open ports 12376/tcp
       command: firewall-cmd --permanent --zone=public --add-port=12376/tcp
 
