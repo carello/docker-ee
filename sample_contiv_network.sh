@@ -23,6 +23,10 @@ netctl group create -t Skunkworks -p app2db --tag 292db 292net1 db
 
 netctl app-profile create -t Skunkworks -g app,db Skunkworks-profile
 
+export CONTIV_PLUGIN_VERSION=$(docker plugin ls --no-trunc| awk '$2~/contiv/ {print$2}')
+
+docker network create skunkworks-app -d ${CONTIV_PLUGIN_VERSION} -o contiv-tag=292app --ipam-driver ${CONTIV_PLUGIN_VERSION} --ipam-opt contiv-tag=292ap
+
 
 
 
