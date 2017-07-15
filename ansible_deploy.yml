@@ -27,15 +27,6 @@
 
     - name: Copy Hosts File
       copy: src="/etc/hosts" dest="/etc/hosts"
-    
-    - name: be sure ntp is installed
-      yum: name=ntp state=present
-
-    - name: be sure ntp is configured
-      copy: src=/etc/ntp.conf dest=/etc/ntp.conf
-
-    - name: be sure ntpd is running and enabled
-      service: name=ntpd state=started enabled=yes
 
     - name: Open port 443
       command: firewall-cmd --permanent --zone=public --add-port=443/tcp
