@@ -11,7 +11,7 @@
 
   tasks:
     - name: Update Packages
-      yum: name='*' state: latest
+      yum: name='*' state=latest
 
     - name: Copy Hosts File
       copy: src="/etc/hosts" dest="/etc/hosts"
