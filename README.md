@@ -13,7 +13,7 @@ This is a working document being refined daily.
 	
 	ssh-keygen
 	
-	ssh-copy-id root@<docker node name> (repeat this for each node)
+	ssh-copy-id root@<hostname> (repeat this for each node)
 	
 	yum install -y wget
 	
@@ -59,7 +59,7 @@ This is a working document being refined daily.
 
 7.  Deploy UCP
 	
-	docker run --rm -it --name ucp -v /var/run/docker.sock:/var/run/docker.sock docker/ucp install -i --host-address <IP Address of First Node "Manager">
+	docker run --rm -it --name ucp -v /var/run/docker.sock:/var/run/docker.sock docker/ucp install -i --host-address <hostname or address that cluster is accessed on>
 
 You will then be able to login to the UCP portal with the username and password that you provided.
 Additional nodes can be added through the configuration in the Management Portal.
