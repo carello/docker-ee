@@ -10,20 +10,8 @@
     private: no
 
   tasks:
-    - name: install the 'Development tools' package group
-      yum: name="@Development tools" state=present
-
-    - name: Install iSCSI Initiator tools
-      yum: name=iscsi-initiator-utils state=present
-
-    - name: Install DM Multipath
-      yum: name=device-mapper-multipath state=present
-
-    - name: install the 'Compatibility Libraries' package group
-      yum: name="@Compatibility Libraries" state=present
-
-    - name: Install Java JDK 1.8 
-      yum: name=java-1.8.0-openjdk-headless-debug.x86_64 state=present
+    - name: Update Packages
+      yum: name='*' state: latest
 
     - name: Copy Hosts File
       copy: src="/etc/hosts" dest="/etc/hosts"
