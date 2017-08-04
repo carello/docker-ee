@@ -1,10 +1,6 @@
 ---
 - hosts: Docker
   vars_prompt:
-  - name: "Centos_Version"
-    prompt: "CentOS Release Version"
-    default: "7.3"
-    private: no
   - name: "Docker_EE_URL"
     prompt: "Enter your Docker EE Docker"
     private: no
@@ -44,14 +40,12 @@
 
     - name: Create Docker URL File
       shell: sh -c 'echo "{{Docker_EE_URL}}/centos" > /etc/yum/vars/dockerurl'
-    - name: Create Docker Version File
-      shell: sh -c 'echo "{{Centos_Version}}" > /etc/yum/vars/dockerosversion'
-
+    
     - name: Install Yum Utils
       yum: name=yum-utils state=present
 
     - name: Configure Docker EE Repo
-      shell: "yum-config-manager --add-repo '{{Docker_EE_URL}}/docker-ee.repo' update_cache=yes"
+      shell: "yum-config-manager --add-repo '{{Docker_EE_URL}}/centos/docker-ee.repo' update_cache=yes"
 
     - name: Install Docker EE  
       yum: name=docker-ee state=present
