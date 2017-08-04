@@ -43,7 +43,7 @@
       service: name=firewalld state=restarted
 
     - name: Create Docker URL File
-      shell: sh -c 'echo "{{Docker_EE_URL}}" > /etc/yum/vars/dockerurl'
+      shell: sh -c 'echo "{{Docker_EE_URL}}/centos" > /etc/yum/vars/dockerurl'
     - name: Create Docker Version File
       shell: sh -c 'echo "{{Centos_Version}}" > /etc/yum/vars/dockerosversion'
 
