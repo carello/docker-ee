@@ -3,7 +3,7 @@
 
   tasks:
     - name: Create Docker Configuration Directory
-      file: path=/etc/docker state=directory
+      file: path/etc/docker state=directory
 
     - name: Create Docker Config File
       copy:
@@ -11,18 +11,17 @@
         dest: /etc/docker/daemon.json
 
     - name: Set Options in Docker Configuration for LVM
-      blockinfile: 
-        dest: /etc/docker/daemon.json
-        marker: "<!-- {mark} ANSIBLE MANAGED BLOCK -->"
-        block: |
-        {
-              "storage-driver": "devicemapper",
-              "storage-opts": [
-              "dm.thinpooldev=/dev/mapper/docker-thinpool",
-              "dm.use_deferred_removal=true",
-              "dm.use_deferred_deletion=true"
-              ]
-        }
+      blockinfile: | 
+        dest=/etc/docker/daemon.json
+        marker="<!-- {mark} ANSIBLE MANAGED BLOCK -->"
+        content="{
+          "storage-driver": "devicemapper",
+          "storage-opts": [
+          "dm.thinpooldev=/dev/mapper/docker-thinpool",
+          "dm.use_deferred_removal=true",
+          "dm.use_deferred_deletion=true"
+          ]
+        }"
 
     - name: Enable Docker Services
       shell: "/usr/bin/systemctl enable docker.service"
