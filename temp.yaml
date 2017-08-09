@@ -2,10 +2,9 @@
 - hosts: Docker
 
   tasks:
-
     - name: Create Docker Configuration Directory
-      file: /etc/docker state=directory
-      
+      file: path=/etc/docker state=directory
+
     - name: Create Docker Config File
       copy:
         content: ""

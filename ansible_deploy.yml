@@ -87,15 +87,10 @@
     - name: Monitor
       shell: "lvs -o+seg_monitor"
 
-    - name: Make Backup Directory
-      file: path=/var/lib/docker.bk state=directory
+    - name: Create Docker Configuration Directory
+      file: path=/etc/docker state=directory
 
-    - name: Copy files to backup directory
-      copy:
-        src: /var/lib/docker/*
-        dest: /var/lib/docker.bk
-
-    - name: Create Docker COnfig File
+    - name: Create Docker Config File
       copy:
         content: ""
         dest: /etc/docker/daemon.json
