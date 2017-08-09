@@ -54,10 +54,10 @@
       yum: name=lvm2 state=present
 
     - name: Setup Storage pvCreate
-      shell: "pvcreate /dev/sda2"
+      shell: "pvcreate /dev/sdb"
 
     - name: Setup Storage vgCreate
-      shell: "vgcreate /dev/sda2"
+      shell: "vgcreate /dev/sdb"
 
     - name: Set Percentages for thinpool
       shell: "lvcreate --wipesignatures -y -n thinpool docker -l 95%VG"
