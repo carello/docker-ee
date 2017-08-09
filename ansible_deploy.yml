@@ -69,11 +69,12 @@
 #      shell: "lvconvert -y --zero n -c 512K --thinpool docker/thinpool --poolmetadata docker/thinpoolmeta"
 
     - name: Set Percentages
-      shell: | 
-        "echo 'activation {
+      blockinfile: |
+        dest=/etc/lvm/profile/docker-thinpool.profile
+        content="activation {
         thin_pool_autoextend_threshold=80
         thin_pool_autoextend_percent=20
-        } >> /etc/lvm/profile/docker-thinpool.profile"
+        }"
 
     - name: Change Profile to thinpool profile
       shell: "lvchange --metadataprofile docker-thinpool docker/thinpool"
