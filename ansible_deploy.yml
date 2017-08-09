@@ -50,6 +50,57 @@
     - name: Install Docker EE  
       yum: name=docker-ee state=present
 
+    - name: Install LVM
+      yum: name=lvm2 state=present
+
+    - name: Setup Storage pvCreate
+      shell: "pvcreate /dev/sda2"
+
+    - name: Setup Storage vgCreate
+      shell: "vgcreate /dev/sda2"
+
+    - name: Set Percentages for thinpool
+      shell: "lvcreate --wipesignatures -y -n thinpool docker -l 95%VG"
+
+    - name: Set Percentages for meta pool
+      shell: "lvcreate --wipesignatures -y -n thinpoolmeta docker -l 1%VG"
+
+    - name: Convert 
+      shell: "lvconvert -y --zero n -c 512K --thinpool docker/thinpool --poolmetadata docker/thinpoolmeta"
+
+    - name: Set Percentages
+      shell: | 
+        "echo 'activation {
+        thin_pool_autoextend_threshold=80
+        thin_pool_autoextend_percent=20
+        } >> /etc/lvm/profile/docker-thinpool.profile"
+
+    - name: Change Profile to thinpool profile
+      shell: "lvchange --metadataprofile docker-thinpool docker/thinpool"
+
+    - name: Monitor
+      shell: "lvs -o+seg_monitor"
+
+    - name: Make Backup Directory
+      file: path=/var/lib/docker.bk state=directory
+
+
+    - name: Copy files to backup directory
+      copy:
+        src: /var/lib/docker/*
+        dest: /var/lib/docker.bk
+
+    - name: Set Options in Docker COnfiguration for LVM
+      shell: | 
+        "echo '{
+        \"storage-driver\": \"devicemapper\",
+        \"storage-opts\": [
+          \"dm.thinpooldev=/dev/mapper/docker-thinpool\",
+          \"dm.use_deferred_removal=true\",
+          \"dm.use.deferred_deletion=true\"
+          ]
+        }' >> /etc/docker/daemon.json"
+
     - name: Enable Docker Services
       shell: "/usr/bin/systemctl enable docker.service"
 
