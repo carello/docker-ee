@@ -13,7 +13,7 @@
     - name: Set Options in Docker Configuration for LVM
       blockinfile: | 
         dest=/etc/docker/daemon.json
-        content"{
+        content="{
           "storage-driver": "devicemapper",
           "storage-opts": [
           "dm.thinpooldev=/dev/mapper/docker-thinpool",
