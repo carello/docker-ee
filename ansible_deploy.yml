@@ -68,6 +68,11 @@
 #    - name: Convert 
 #      shell: "lvconvert -y --zero n -c 512K --thinpool docker/thinpool --poolmetadata docker/thinpoolmeta"
 
+    - name: Create thinpool profile
+      copy:
+        content: ""
+        dest: /etc/lvm/profile/docker-thinpool.profile
+
     - name: Set Percentages
       blockinfile: |
         dest=/etc/lvm/profile/docker-thinpool.profile
