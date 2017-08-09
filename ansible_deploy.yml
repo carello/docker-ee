@@ -53,20 +53,20 @@
     - name: Install LVM
       yum: name=lvm2 state=present
 
-#    - name: Setup Storage pvCreate
-#      shell: "pvcreate /dev/sdb"
+    - name: Setup Storage pvCreate
+      shell: "pvcreate /dev/sdb"
 
-#    - name: Setup Storage vgCreate
-#      shell: "vgcreate docker /dev/sdb"
+    - name: Setup Storage vgCreate
+      shell: "vgcreate docker /dev/sdb"
 
-#    - name: Set Percentages for thinpool
-#      shell: "lvcreate --wipesignatures y -n thinpool docker -l 95%VG"
+    - name: Set Percentages for thinpool
+      shell: "lvcreate --wipesignatures y -n thinpool docker -l 95%VG"
 
-#    - name: Set Percentages for meta pool
-#      shell: "lvcreate --wipesignatures y -n thinpoolmeta docker -l 1%VG"
+    - name: Set Percentages for meta pool
+      shell: "lvcreate --wipesignatures y -n thinpoolmeta docker -l 1%VG"
 
-#    - name: Convert 
-#      shell: "lvconvert -y --zero n -c 512K --thinpool docker/thinpool --poolmetadata docker/thinpoolmeta"
+    - name: Convert 
+      shell: "lvconvert -y --zero n -c 512K --thinpool docker/thinpool --poolmetadata docker/thinpoolmeta"
 
     - name: Create thinpool profile
       copy:
@@ -90,22 +90,27 @@
     - name: Make Backup Directory
       file: path=/var/lib/docker.bk state=directory
 
-
     - name: Copy files to backup directory
       copy:
         src: /var/lib/docker/*
         dest: /var/lib/docker.bk
 
-    - name: Set Options in Docker COnfiguration for LVM
-      shell: | 
-        "echo '{
+    - name: Create Docker COnfig File
+      copy:
+        content: ""
+        dest: /etc/docker/daemon.json
+
+    - name: Set Options in Docker Configuration for LVM
+      blockinfile: | 
+        dest=/etc/docker/daemon.json
+        content"{
         \"storage-driver\": \"devicemapper\",
         \"storage-opts\": [
           \"dm.thinpooldev=/dev/mapper/docker-thinpool\",
           \"dm.use_deferred_removal=true\",
           \"dm.use.deferred_deletion=true\"
           ]
-        }' >> /etc/docker/daemon.json"
+        }"
 
     - name: Enable Docker Services
       shell: "/usr/bin/systemctl enable docker.service"
