@@ -11,9 +11,11 @@
         dest: /etc/docker/daemon.json
 
     - name: Set Options in Docker Configuration for LVM
-      blockinfile: | 
-        dest=/etc/docker/daemon.json
-        content="{
+      blockinfile: 
+        path: /etc/docker/daemon.json
+        marker: "<!-- {mark} ANSIBLE MANAGED BLOCK -->"
+        content: |
+        "{
               "storage-driver": "devicemapper",
               "storage-opts": [
               "dm.thinpooldev=/dev/mapper/docker-thinpool",
