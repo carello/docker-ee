@@ -53,20 +53,20 @@
     - name: Install LVM
       yum: name=lvm2 state=present
 
-    - name: Setup Storage pvCreate
-      shell: "pvcreate /dev/sdb"
+#    - name: Setup Storage pvCreate
+#      shell: "pvcreate /dev/sdb"
 
-    - name: Setup Storage vgCreate
-      shell: "vgcreate docker /dev/sdb"
+#    - name: Setup Storage vgCreate
+#      shell: "vgcreate docker /dev/sdb"
 
-    - name: Set Percentages for thinpool
-      shell: "lvcreate --wipesignatures y -n thinpool docker -l 95%VG"
+#    - name: Set Percentages for thinpool
+#      shell: "lvcreate --wipesignatures y -n thinpool docker -l 95%VG"
 
-    - name: Set Percentages for meta pool
-      shell: "lvcreate --wipesignatures y -n thinpoolmeta docker -l 1%VG"
+#    - name: Set Percentages for meta pool
+#      shell: "lvcreate --wipesignatures y -n thinpoolmeta docker -l 1%VG"
 
-    - name: Convert 
-      shell: "lvconvert -y --zero n -c 512K --thinpool docker/thinpool --poolmetadata docker/thinpoolmeta"
+#    - name: Convert 
+#      shell: "lvconvert -y --zero n -c 512K --thinpool docker/thinpool --poolmetadata docker/thinpoolmeta"
 
     - name: Set Percentages
       shell: | 
