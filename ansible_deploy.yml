@@ -60,10 +60,10 @@
       shell: "vgcreate docker /dev/sdb"
 
     - name: Set Percentages for thinpool
-      shell: "lvcreate --wipesignatures -y -n thinpool docker -l 95%VG"
+      shell: "lvcreate --wipesignatures y -n thinpool docker -l 95%VG"
 
     - name: Set Percentages for meta pool
-      shell: "lvcreate --wipesignatures -y -n thinpoolmeta docker -l 1%VG"
+      shell: "lvcreate --wipesignatures y -n thinpoolmeta docker -l 1%VG"
 
     - name: Convert 
       shell: "lvconvert -y --zero n -c 512K --thinpool docker/thinpool --poolmetadata docker/thinpoolmeta"
