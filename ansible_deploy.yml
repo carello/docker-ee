@@ -57,7 +57,7 @@
       shell: "pvcreate /dev/sdb"
 
     - name: Setup Storage vgCreate
-      shell: "vgcreate /dev/sdb"
+      shell: "vgcreate docker /dev/sdb"
 
     - name: Set Percentages for thinpool
       shell: "lvcreate --wipesignatures -y -n thinpool docker -l 95%VG"
