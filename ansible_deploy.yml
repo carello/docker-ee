@@ -6,6 +6,12 @@
     private: no
 
   tasks:
+    - name: install the 'Development tools' package group
+      yum: name="@Development tools" state=present
+
+    - name: install the 'Compatibility Libraries' package group
+      yum: name="@Compatibility Libraries" state=present
+    
     - name: Update Packages
       yum: name='*' state=latest
 
@@ -76,6 +82,7 @@
     - name: Set Percentages
       blockinfile: |
         dest=/etc/lvm/profile/docker-thinpool.profile
+        marker=
         content="activation {
         thin_pool_autoextend_threshold=80
         thin_pool_autoextend_percent=20
