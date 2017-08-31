@@ -20,27 +20,21 @@
 
     - name: Open port 443
       command: firewall-cmd --permanent --zone=public --add-port=443/tcp
-    - name: Open ports 2375-2376
-      command: firewall-cmd --permanent --zone=public --add-port=2375-2376/tcp
-    - name: Open port 4789/tcp
-      command: firewall-cmd --permanent --zone=public --add-port=4789/tcp
-    - name: Open port 4789/udp
-      command: firewall-cmd --permanent --zone=public --add-port=4789/udp
-    - name: Open ports 12379-12385/tcp
-      command: firewall-cmd --permanent --zone=public --add-port=12379-12385/tcp
+    - name: Open ports 2376
+      command: firewall-cmd --permanent --zone=public --add-port=2376/tcp
     - name: Open ports 2377/tcp
       command: firewall-cmd --permanent --zone=public --add-port=2377/tcp
+    - name: Open port 4789/udp
+      command: firewall-cmd --permanent --zone=public --add-port=4789/udp
     - name: Open ports 7946/tcp
       command: firewall-cmd --permanent --zone=public --add-port=7946/tcp
     - name: Open ports 7946/udp
       command: firewall-cmd --permanent --zone=public --add-port=7946/udp
-    - name: Open ports 12386/tcp
-      command: firewall-cmd --permanent --zone=public --add-port=12386/tcp
-    - name: Open ports 12387/tcp
-      command: firewall-cmd --permanent --zone=public --add-port=12387/tcp
     - name: Open ports 12376/tcp
       command: firewall-cmd --permanent --zone=public --add-port=12376/tcp
-
+    - name: Open ports 12379-12387/tcp
+      command: firewall-cmd --permanent --zone=public --add-port=12379-12387/tcp
+    
     - name: Restart Firewall Services
       service: name=firewalld state=restarted
 
