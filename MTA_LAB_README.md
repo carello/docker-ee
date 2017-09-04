@@ -133,15 +133,15 @@ Additional aliases:
 
 Congratulations, you have installed the UCP manager node.
 
-### <a name="task1.2"></a>Task 1.2: Install a Linux worker node
+### <a name="task1.2"></a>Task 1.2: Install a Linux worker nodes
 
-Now that we have a manager node, we'll add a Linux worker node to our cluster. Worker nodes are the servers that actually run our Docker-based applications.
+Now that we have a manager node, we'll add the Linux worker nodes to our cluster. Worker nodes are the servers that actually run our Docker-based applications.
 
 1. From the main UCP dashboard click `Nodes` and then `Add Nodes`.
 2. Copy the text in the box to your clipboard.
 	> **Note** There is an icon in the upper right corner of the box that you can click to copy the text to your clipboard
 	![](./images/add_node.png)
-3.  SSH into the remaing Linux nodes (pod-X-lin02-04)
+3.  SSH into the remaining Linux nodes (pod-X-lin02 - pod-X-lin04)
 	`ssh docker@<linux node IP Address>`
 4. Paste the text from Step 2 at the command prompt, and press enter.
 
@@ -197,10 +197,11 @@ Like UCP, DTR uses a single Docker container to bootstrap the install process. I
 	* **--dtr-external URL**: `<pod-X-lin01 IP Address>`
 	* **--ucp-node**: The hostname of `lin02` (For example: pod-X-lin02)
 	* **--ucp-url**: The IP address of the UCP Manager (pod-X-lin01)
+	
 	```
 	docker run -it --rm docker/dtr install \
-	--dtr-external-url <linux node b FQDN> \
-	--ucp-node <linux node b hostname> \
+	--dtr-external-url <pod-X-lin02 IP Address \
+	--ucp-node <pod-X-lin02> \
 	--ucp-username docker \
 	--ucp-password Docker2017 \
 	--ucp-url <pod-X-lin01 IP Address> \
