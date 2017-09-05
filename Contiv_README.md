@@ -41,7 +41,9 @@ The Docker EE cluster you will be building will be comprised of five nodes - 4 L
 
 ![](./images/vm_roles.png)
 
+
 ## <a name="prerequisites"></a>Prerequisites
+
 
 You will be provided a set of five virtual machines (four Linux and 1 Windows), which we will be configuring with Docker	. You do not need Docker running on your laptop, but you will need a Remote Desktop client to connect to the Windows VM, and an SSH client to connect into the Linux one.
 ### 1. RDP Client
